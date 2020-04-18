@@ -20,26 +20,26 @@ const operations = [
 const generate = () => {
   const rows = [];
   for (let i = 0; i < numRows; i++) {
-    rows.push(Array.from(Array(numCols), () => 0));
+    rows.push(Array.from(Array(numCols), () => 0))
   }
 
   return rows;
 };
 
 function App() {
-  const [running, setRunning] = useState(false);
-  const [grid, setGrid] = useState(generate());
+  const [running, setRunning] = useState(false)
+  const [grid, setGrid] = useState(generate())
 
-  const runningRef = useRef();
-  runningRef.current = running;
+  const runningRef = useRef()
+  runningRef.current = running
 
   const runSimulation = useCallback(() => {
     if (!runningRef.current) {
       return;
     }
 
-    setGrid(value =>
-      produce(value, gridCopy => {
+    setGrid(grid =>
+      produce(grid, gridCopy => {
         for (let i = 0; i < numRows; i++) {
           for (let k = 0; k < numCols; k++) {
             let neighbors = 0;
@@ -50,11 +50,11 @@ function App() {
                 newI < numRows &&
                 newK >= 0 &&
                 newK < numCols &&
-                (neighbors += value[newI][newK]);
+                (neighbors += grid[newI][newK]);
             });
 
             (neighbors < 2 || neighbors > 3) && (gridCopy[i][k] = 0)
-            value[i][k] === 0 && neighbors === 3 && (gridCopy[i][k] = 1)
+            grid[i][k] === 0 && neighbors === 3 && (gridCopy[i][k] = 1)
           }
         }
       })
@@ -72,7 +72,7 @@ function App() {
           onClick={() => {
             setRunning(!running);
             if (!running) {
-              runningRef.current = true;
+              runningRef.current = true
               runSimulation();
             }
           }}
